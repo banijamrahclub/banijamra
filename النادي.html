@@ -2,6 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval';">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نادي بني جمرة الثقافي والرياضي</title>
     <style>
@@ -11,7 +13,7 @@
             --secondary: #000000; /* الأسود */
             --accent: #ffffff; /* الأبيض */
             --light-gray: #f8f9fa;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,7 +29,7 @@
         /* أنيميشن الظهور */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
             transition: var(--transition);
         }
         .reveal.active {
@@ -256,6 +258,11 @@
             box-shadow: 0 6px 15px rgba(30, 125, 50, 0.3);
             transform: translateY(-2px);
         }
+        .insta-link:focus, .contact-link:focus, nav a:focus {
+            outline: 3px solid rgba(30,125,50,0.25);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
 
         /* مجلس الإدارة المحدث */
         .admin-board { 
@@ -340,6 +347,137 @@
             font-size: 0.95rem;
         }
 
+        /* قسم الأخبار */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .news-item {
+            background: linear-gradient(135deg, #f9fdfb 0%, #fff 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            transition: var(--transition);
+            border-right: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 28px rgba(30,125,50,0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            min-height: 180px;
+        }
+
+        .news-image img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .news-content {
+            padding: 1.2rem;
+            flex: 1;
+        }
+
+        .news-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .news-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* جدول المباريات */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .schedule-table thead {
+            background: linear-gradient(90deg, var(--primary) 0%, #66bb6a 100%);
+            color: white;
+        }
+
+        .schedule-table th {
+            padding: 1rem;
+            text-align: right;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .schedule-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e8e8e8;
+            color: #555;
+        }
+
+        .schedule-table tbody tr {
+            background: #fafbfc;
+            transition: var(--transition);
+        }
+
+        .schedule-table tbody tr:hover {
+            background: #f0f7f0;
+        }
+
+        .schedule-table tbody tr:nth-child(even) {
+            background: #ffffff;
+        }
+
+        .schedule-table tbody tr:nth-child(even):hover {
+            background: #f0f7f0;
+        }
+
+        .match-date {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .team-name {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .score {
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .score.pending {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .schedule-wrapper {
+            overflow-x: auto;
+        }
+
         footer { 
             background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
             color: #fff; 
@@ -372,9 +510,11 @@
 
     <nav>
         <a onclick="scrollToSection('about')">عن النادي</a>
+        <a onclick="scrollToSection('news')">أخبار النادي</a>
+        <a onclick="scrollToSection('schedule')">جدول المباريات</a>
         <a onclick="scrollToSection('board')">مجلس الإدارة</a>
         <a onclick="scrollToSection('sports')">الأنشطة الرياضية</a>
-        <a onclick="scrollToSection('gallery')">معرج الصور</a>
+        <a onclick="scrollToSection('gallery')">معرض الصور</a>
         <a onclick="scrollToSection('contact')">تواصل معنا</a>
     </nav>
 
@@ -384,6 +524,75 @@
             <h2>نبذة عن النادي</h2>
             <p>تأسس نادي بني جمرة الثقافي والرياضي عام 1958م، وهو ركن أساسي في الحراك الرياضي والثقافي بمملكة البحرين. يلتزم النادي بدعم طاقات الشباب وتوفير بيئة خصبة للإبداع الرياضي والاجتماعي.</p>
         </section>
+
+        <section id="news" class="reveal">
+            <h2>أخبار النادي</h2>
+            <div class="news-grid">
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر 1.png" alt="خسارة أمام نادي دار كليب">
+                    </div>
+                    <div class="news-content">
+                        <h4>خسارة أمام نادي دار كليب</h4>
+                        <p>خسر نادي بني جمرة الثقافي والرياضي مباراته أمام نادي دار كليب بنتيجة 3-1، وذلك ضمن الجولة الثالثة من منافسات دوري عيسى بن راشد لكرة الطائرة.</p>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر2.png" alt="مباراة قوية أمام النبيه صالح">
+                    </div>
+                    <div class="news-content">
+                        <h4>مباراة قوية أمام النبيه صالح</h4>
+                        <p>تلقى فريق بني جمرة خسارة أمام نادي النبيه صالح بنتيجة 3-2 في مباراة قوية ومتكافئة ضمن منافسات دوري عيسى بن راشد لكرة الطائرة.</p>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر3.png" alt="فوز مهم على نادي الشباب">
+                    </div>
+                    <div class="news-content">
+                        <h4>فوز مهم على نادي الشباب</h4>
+                        <p>حقق نادي بني جمرة فوزًا مهمًا على نادي الشباب بنتيجة 3-1 في إحدى مباريات الدوري، ليعزز من موقعه ويواصل حضوره في المنافسة.</p>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر4.png" alt="انتخابات مجلس الإدارة الجديد">
+                    </div>
+                    <div class="news-content">
+                        <h4>انتخابات مجلس الإدارة الجديد</h4>
+                        <p>تم انتخاب أعضاء مجلس إدارة نادي بني جمرة الثقافي والرياضي للدورة الجديدة، وذلك خلال الاجتماع المخصص لانتخابات الإدارة، إيذانًا ببدء مرحلة جديدة في مسيرة النادي.</p>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر5.png" alt="فعالية فحص طبي شامل">
+                    </div>
+                    <div class="news-content">
+                        <h4>فعالية فحص طبي شامل</h4>
+                        <p>نظم نادي بني جمرة الثقافي والرياضي فعالية فحص طبي شامل بالتعاون مع مستشفيات الأمل ودار الشفاء، ضمن جهوده لتعزيز الوعي الصحي وخدمة المجتمع.</p>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-image">
+                        <img src="خبر6.png" alt="تهنئة أسواق الساتر بافتتاح الفرع الجديد">
+                    </div>
+                    <div class="news-content">
+                        <h4>تهنئة أسواق الساتر بافتتاح الفرع الجديد</h4>
+                        <p>هنأ نادي بني جمرة الثقافي والرياضي أسواق الساتر بمناسبة افتتاح فرعها الجديد، وذلك في إطار الشراكات المجتمعية بين النادي ومؤسسات المجتمع.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="reveal">
+            <h2>جدول المباريات</h2>
+            <div class="card">
+                <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                    <label style="font-weight:700; color:var(--primary);">عرض: شهري</label>
+                </div>
+                <div id="scheduleContainer" style="margin-top:1rem;"></div>
+            </div>
 
         <section id="board" class="reveal">
             <h2>مجلس الإدارة (2025 - 2029)</h2>
@@ -462,7 +671,7 @@
         <section id="gallery" class="reveal">
             <h2>معرض الصور</h2>
             <p>يمكنكم رؤية جميع الصور والفعاليات في حساب الإنستقرام الرسمي:</p>
-            <a href="https://www.instagram.com/MYS_CLUB_BANIJAMRA" target="_blank" class="insta-link">@MYS_CLUB_BANIJAMRA</a>
+            <a href="https://www.instagram.com/MYS_CLUB_BANIJAMRA" target="_blank" rel="noopener noreferrer" aria-label="إنستقرام نادي بني جمرة" class="insta-link">@MYS_CLUB_BANIJAMRA</a>
             
             <div class="gallery">
                 <div class="gallery-item">
@@ -518,7 +727,7 @@
                             <span class="icon">✉️</span>
                             <span class="label">بريد إلكتروني</span>
                         </a>
-                        <a href="https://www.instagram.com/MYS_CLUB_BANIJAMRA" target="_blank" class="contact-link" title="حساب الإنستقرام">
+                        <a href="https://www.instagram.com/MYS_CLUB_BANIJAMRA" target="_blank" rel="noopener noreferrer" aria-label="إنستقرام نادي بني جمرة" class="contact-link" title="حساب الإنستقرام">
                             <span class="icon">📱</span>
                             <span class="label">إنستقرام</span>
                         </a>
@@ -544,6 +753,113 @@
             const element = document.getElementById(sectionId);
             if (element) element.scrollIntoView({ behavior: 'smooth' });
         }
+
+        // جدول المباريات — بيانات وقواعد العرض الأسبوعي/الشهري
+        const matches = [
+            { home: 'بني جمرة', away: 'الأهلي', date: '2026-01-04', time: '18:00', comp: 'دوري' },
+            { home: 'بني جمرة', away: 'المحرق', date: '2026-01-08', time: '19:30', comp: 'دوري' },
+            { home: 'بني جمرة', away: 'دار كليب', date: '2026-01-12', time: '19:30', comp: 'دوري' },
+            { home: 'بني جمرة', away: 'النجمة', date: '2026-01-20', time: '18:00', comp: 'دوري' },
+            { home: 'بني جمرة', away: 'المحرق', date: '2026-01-24', time: '19:30', comp: 'دوري' }
+        ];
+
+        function getWeekKey(d) {
+            // ISO week number key YYYY-WW
+            const date = new Date(d.getTime());
+            // Set to nearest Thursday
+            date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
+            const week1 = new Date(date.getFullYear(), 0, 4);
+            const weekNo = 1 + Math.round(((date - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+            return `${date.getFullYear()}-W${String(weekNo).padStart(2,'0')}`;
+        }
+
+        function renderSchedule(view = 'monthly') {
+            const container = document.getElementById('scheduleContainer');
+            // clear container safely
+            container.textContent = '';
+            if (view === 'weekly') {
+                const groups = {};
+                matches.forEach(m => {
+                    const d = new Date(m.date + 'T00:00:00');
+                    const key = getWeekKey(d);
+                    groups[key] = groups[key] || [];
+                    groups[key].push({ ...m, dateObj: d });
+                });
+                Object.keys(groups).sort().forEach(key => {
+                    const weekDiv = document.createElement('div');
+                    weekDiv.className = 'card';
+                    const title = document.createElement('h3');
+                    title.style.marginTop = '0';
+                    title.textContent = `أسبوع ${key}`;
+                    weekDiv.appendChild(title);
+                    const table = buildTable(groups[key]);
+                    weekDiv.appendChild(table);
+                    container.appendChild(weekDiv);
+                });
+            } else {
+                const groups = {};
+                matches.forEach(m => {
+                    const d = new Date(m.date + 'T00:00:00');
+                    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                    groups[key] = groups[key] || [];
+                    groups[key].push({ ...m, dateObj: d });
+                });
+                Object.keys(groups).sort().forEach(key => {
+                    const [yr, mon] = key.split('-');
+                    const monthName = new Date(yr, parseInt(mon)-1).toLocaleString('ar', { month: 'long' });
+                    const monthDiv = document.createElement('div');
+                    monthDiv.className = 'card';
+                    const title = document.createElement('h3');
+                    title.style.marginTop = '0';
+                    title.textContent = `${monthName} ${yr}`;
+                    monthDiv.appendChild(title);
+                    const table = buildTable(groups[key]);
+                    monthDiv.appendChild(table);
+                    container.appendChild(monthDiv);
+                });
+            }
+        }
+
+        function buildTable(items) {
+            const table = document.createElement('table');
+            table.className = 'schedule-table';
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            ['التاريخ','الوقت','الفريق الأول','النتيجة','الفريق الثاني','النوع'].forEach(h => {
+                const th = document.createElement('th');
+                th.textContent = h;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            const tbody = document.createElement('tbody');
+            items.sort((a,b)=> a.dateObj - b.dateObj).forEach(m => {
+                const tr = document.createElement('tr');
+                const dateTd = document.createElement('td');
+                dateTd.className = 'match-date';
+                dateTd.textContent = new Date(m.date).toLocaleDateString('ar-EG');
+                tr.appendChild(dateTd);
+                const timeTd = document.createElement('td'); timeTd.textContent = m.time; tr.appendChild(timeTd);
+                const homeTd = document.createElement('td'); homeTd.className='team-name'; homeTd.textContent = m.home; tr.appendChild(homeTd);
+                const scoreTd = document.createElement('td');
+                if (m.score) {
+                    const sp = document.createElement('span'); sp.className='score'; sp.textContent = m.score; scoreTd.appendChild(sp);
+                } else {
+                    const sp = document.createElement('span'); sp.className='score pending'; sp.textContent='قادم'; scoreTd.appendChild(sp);
+                }
+                tr.appendChild(scoreTd);
+                const awayTd = document.createElement('td'); awayTd.className='team-name'; awayTd.textContent = m.away; tr.appendChild(awayTd);
+                const compTd = document.createElement('td'); compTd.textContent = m.comp; tr.appendChild(compTd);
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            return table;
+        }
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            // Default render (monthly). Selector removed per user request.
+            renderSchedule();
+        });
 
         // أنيميشن التمرير - يختفي عند الخروج ويظهر عند الدخول
         const observerOptions = { threshold: 0.1 };
